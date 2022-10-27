@@ -5,6 +5,9 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Exceptions\InvalidOrderException;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -43,8 +46,18 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        // $this->reportable(function (InvalidOrderException $e) {
+          
+                // return response()->json(['message' => 'Object not found'], 404);
+           
+        // });
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json(['message' => 'Record not found.'], 404);
+                // return response()->json( false, 404);
+            }
         });
     }
+   
+
 }

@@ -7,24 +7,24 @@ use Illuminate\Support\Facades\Route;
 // 200 OK
 Route::post('/reset','ResetController@reset');
 
-// Get balance for non-existing account
+// ---Get balance for non-existing account
 // GET /balance?account_id=1234
-// 404 0
+// 404 0 
 
-// Create account with initial balance
+// ---Create account with initial balance
 // POST /event {"type":"deposit", "destination":"100", "amount":10}
 // 201 {"destination": {"id":"100", "balance":10}}
 
-// Deposit into existing account
+// ---Deposit into existing account
 // POST /event {"type":"deposit", "destination":"100", "amount":10}
 // 201 {"destination": {"id":"100", "balance":20}}
 
-// Get balance for existing account
+// ---Get balance for existing account
 // GET /balance?account_id=100
 // 200 20
-Route::get('/balance','BalanceController@show');
+Route::get('/balance', [App\Http\Controllers\BalanceController::class, 'show']);
 
-// Withdraw from non-existing account
+// ---Withdraw from non-existing account
 // POST /event {"type":"withdraw", "origin":"200", "amount":10}
 // 404 0
 
@@ -39,4 +39,7 @@ Route::get('/balance','BalanceController@show');
 // Transfer from non-existing account
 // POST /event {"type":"transfer", "origin":"200", "amount":15, "destination":"300"}
 // 404 0
-Route::post('/event','EventController@store');
+Route::post('/event', [App\Http\Controllers\EventController::class, 'store']);
+// Route::post('/event','EventController@store');
+
+// Route::apiResource('/balance', App\Http\Controllers\BalanceController::class);
